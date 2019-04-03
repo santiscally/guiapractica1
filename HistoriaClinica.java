@@ -82,4 +82,7 @@ public class HistoriaClinica {
     Calendar fechaActual= Calendar.getInstance();
     return (fechaActual.get(Calendar.YEAR)-nac.get(Calendar.YEAR))<16;
   }
+
+  
+
 }

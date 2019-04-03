@@ -506,7 +506,17 @@ public class Main{
     }
   }
 
+  public static void mostrarCantTratamientoEstetico(Programa []programas){
 
+    int cantidad=0;
+    for (int i=0; i<programas.length;i++){
+      if (programas[i].esEstetica()){
+        cantidad++;
+      }
+      programas[i].setCantidadEstetico(cantidad);
+    }
+    System.out.println("La cantidad de tratamientos esteticos existentes son: " +programas[0].getCantidadEstetico());
+  }
 
 
 
