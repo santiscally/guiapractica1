@@ -33,9 +33,12 @@ public class Main{
           mostrarTratamientosEsteticos(programas, historias);
           break;
         // case 7:
-        //   mostrarCantTratamientoEstetico();
+        //   mostrarVisitas(historias);
         //   break;
         case 8:
+          mostrarCantTratamientoEstetico(programas);
+          break;
+        case 9:
           System.exit(0);
         default:
           System.out.print("\nOPCION INVALIDA, INGRESAR NUEVAMENTE\n");
@@ -51,8 +54,9 @@ public class Main{
     System.out.println("4. Mostrar la cantidad de pacientes sin obra social");
     System.out.println("5. Buscar por pantalla visitas correspondiente a determinada programa");
     System.out.println("6. Mostrar informacion de los tratamientos esteticos");
-    System.out.println("7. Ver visitas y sus respectivos comentarios");
-    System.out.println("8. Salir del programa");
+    System.out.println("7. Mostrar informacion de las visitas");
+    System.out.println("8. Ver visitas y sus respectivos comentarios");
+    System.out.println("9. Salir del programa");
   }
   public static void ingresarProgramas(Programa[] programas){
     Scanner stdin=new Scanner (System.in);
@@ -506,7 +510,7 @@ public class Main{
     }
   }
 
-  public static void mostrarCantTratamientoEstetico(Programa []programas){
+  public static void mostrarCantTratamientoEstetico(Programa [] programas){
 
     int cantidad=0;
     for (int i=0; i<programas.length;i++){
