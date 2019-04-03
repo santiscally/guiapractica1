@@ -77,4 +77,9 @@ public class HistoriaClinica {
     visitas[indice].setProfesional(profesional);
     visitas[indice].setComentarios(comentarios);
   }
+
+  public boolean esMenor(){
+    Calendar fechaActual= Calendar.getInstance();
+    return (fechaActual.get(Calendar.YEAR)-nac.get(Calendar.YEAR))<16;
+  }
 }

@@ -26,10 +26,10 @@ public class Main{
         case 4:
           mostrarCantSinObraSocial(historias);
           break;
-        // case 5:
-        //   mostrarTratamientoEstetico(programas, historias);
-        //   break;
-        // case 6:
+        case 5:
+          mostrarPacientesDeProgramas(programas, historias);
+          break;
+        // FALTA AGREGAR CASO DE USOcase 6:
         //   mostrarVisita(historias);
         //   break;
         // case 7:
@@ -128,6 +128,11 @@ public class Main{
 
       System.out.println("Ingresar fecha de nacimiento del paciente");
       historias[i].setNac(asignarFecha());
+
+      if (historias[i].esMenor()){
+        System.out.println("No se permite menores de edad\nSaliendo del programa...");
+        System.exit(0);
+      }
 
       System.out.println("Ingresar si tiene obra social o no (1. si 2. no) ");
       salir:
@@ -359,14 +364,27 @@ public class Main{
   }
 
   public static Calendar asignarFecha(){
+    Calendar fecha=Calendar.getInstance();
+
     System.out.print("\nDia: ");
     int dia=asignarInt();
+    while (dia>31){
+      System.out.print("Dia invalido, ingresar nuevamente: ");
+      dia=asignarInt();
+    }
     System.out.print("\nMes: ");
-    int mes=asignarInt();
-    System.out.print("\nAnio: ");
+    int mes=asignarInt()-1;
+    while (mes>11){
+      System.out.print("Mes invalido, ingresar nuevamente: ");
+      mes=asignarInt()-1;
+    }
+    System.out.print("\nAño: ");
     int anio=asignarInt();
 
-    Calendar fecha=Calendar.getInstance();
+    while (anio>fecha.get(Calendar.YEAR)){
+      System.out.print("Año invalido: ");
+      anio=asignarInt();
+    }
 
     fecha.set(Calendar.DAY_OF_MONTH, dia);
     fecha.set(Calendar.MONTH, mes);
@@ -377,6 +395,7 @@ public class Main{
     Calendar fechaActual=Calendar.getInstance();
     int cantidad=0;
     //  verifico que por cada paciente sin obra social, alguna de sus visitas hayan sido en el ultimo mes para poder contabilizar
+
     for (int i=0;i<historias.length;i++){
       if (historias[i].getObraSocial()==false){
         for (int j=0;j<historias[i].getVisitas().length;j++){
@@ -390,6 +409,58 @@ public class Main{
     }
     System.out.println("La cantidad de pacientes sin obra social ingresados en el ultimo mes son: \n" +cantidad);
   }
+
+  public static void mostrarPacientesDeProgramas(Programa[] programas, HistoriaClinica[] historias){
+    Scanner stdin=new Scanner(System.in);
+    System.out.println("Ingresar 2 letras correspondientes a un programa para ver los pacientes: ");
+    String letras=stdin.nextLine();
+    String nombreDelPrograma=null;
+    boolean formaParte=false;
+    Calendar fecha= Calendar.getInstance();
+    while (letras.length()!=2){
+      System.out.println("Ha ingresado una incorrecta cantidad de letras, recuerde que deben ser 2, vuelva a ingresar: ");
+      letras=stdin.nextLine();
+    }
+
+    for (int i=0; i<programas.length;i++){
+      formaParte=false;
+      for (int j=0;j<programas[i].getNombre().length();j++){
+        if (letras.charAt(j)==programas[i].getNombre().charAt(j)){
+          formaParte=true;
+          nombreDelPrograma=programas[i].getNombre();
+        }
+      }
+    }
+
+    if (formaParte){
+      formaParte=false;
+      for (int i=0; i< historias.length;i++){
+        for (int j=0; j<historias[i].getProgramas().length;j++){
+          if (nombreDelPrograma.equalsIgnoreCase(historias[i].getProgramas()[j].getNombre())){
+            formaParte=true;
+          }
+        }
+
+        if (formaParte){
+          System.out.println("El nombre del paciente que corresponde a este programa es: " +historias[i].getNya() +"\nSu DNI es: "+historias[i].getDni() +"\nY sus visitas fueron: ");
+
+          for (int j=0;j<historias[i].getVisitas().length;j++){
+            System.out.println(historias[i].getVisitas()[j].getFechaVisita().get(Calendar.DAY_OF_MONTH) +"/" +historias[i].getVisitas()[j].getFechaVisita().get(Calendar.MONTH) +"/" +historias[i].getVisitas()[j].getFechaVisita().get(Calendar.YEAR));
+          }
+        }
+
+      }
+    }else {
+      System.out.println("No existe ningun programa que empiece con las letras ingresadas");
+    }
+
+
+  }
+
+
+
+
+
 
 
 
