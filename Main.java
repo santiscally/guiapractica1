@@ -29,9 +29,9 @@ public class Main{
         case 5:
           mostrarPacientesDeProgramas(programas, historias);
           break;
-        // FALTA AGREGAR CASO DE USOcase 6:
-        //   mostrarVisita(historias);
-        //   break;
+        case 6:
+          mostrarTratamientosEsteticos(programas, historias);
+          break;
         // case 7:
         //   mostrarCantTratamientoEstetico();
         //   break;
@@ -45,7 +45,7 @@ public class Main{
 
   }
   public static void mostrarOpciones(){
-    System.out.println("1. Ingresar informacion para los programas y tratamientos existentes");
+    System.out.println("\n\n1. Ingresar informacion para los programas y tratamientos existentes");
     System.out.println("2. Ingresar informacion correspondiente a las historias clinicas");
     System.out.println("3. Mostrar informacion del paciente");
     System.out.println("4. Mostrar la cantidad de pacientes sin obra social");
@@ -89,7 +89,9 @@ public class Main{
 	  System.out.print("\nIngresar numero de identificacion del programa: ");
 	  programa[indice].setNumero(asignarInt());
 
-
+    for (int i=0;i<programa[indice].getMedicamento().length;i++){
+      programa[indice].agregarMedicamento(asignarMedicamentos(), i);;
+    }
 
 	  if (opcion==1){
 		  System.out.print("Ingresar las calorias maximas: ");
@@ -423,12 +425,17 @@ public class Main{
     }
 
     for (int i=0; i<programas.length;i++){
-      formaParte=false;
-      for (int j=0;j<programas[i].getNombre().length();j++){
-        if (letras.charAt(j)==programas[i].getNombre().charAt(j)){
+      formaParte=true;
+      for (int j=0;j<letras.length();j++){
+        if (letras.charAt(j)!=programas[i].getNombre().charAt(j)){
+          formaParte=false;
+          break;
+        }else{
           formaParte=true;
-          nombreDelPrograma=programas[i].getNombre();
         }
+      }
+      if (formaParte){
+        nombreDelPrograma=programas[i].getNombre();
       }
     }
 
@@ -445,7 +452,7 @@ public class Main{
           System.out.println("El nombre del paciente que corresponde a este programa es: " +historias[i].getNya() +"\nSu DNI es: "+historias[i].getDni() +"\nY sus visitas fueron: ");
 
           for (int j=0;j<historias[i].getVisitas().length;j++){
-            System.out.println(historias[i].getVisitas()[j].getFechaVisita().get(Calendar.DAY_OF_MONTH) +"/" +historias[i].getVisitas()[j].getFechaVisita().get(Calendar.MONTH) +"/" +historias[i].getVisitas()[j].getFechaVisita().get(Calendar.YEAR));
+            System.out.println(historias[i].getVisitas()[j].getFechaVisita().get(Calendar.DAY_OF_MONTH) +"/" +(historias[i].getVisitas()[j].getFechaVisita().get(Calendar.MONTH)+1) +"/" +historias[i].getVisitas()[j].getFechaVisita().get(Calendar.YEAR));
           }
         }
 
@@ -457,7 +464,47 @@ public class Main{
 
   }
 
+  public static Medicamento asignarMedicamentos(){
+    Medicamento medicamento= new Medicamento();
 
+    medicamento.setCodigo(001);
+    medicamento.setNombre("Ibuprofeno");
+    medicamento.setPrecio(1000);
+    medicamento.setEsCrema(false);
+
+    return medicamento;
+  }
+
+  public static void mostrarTratamientosEsteticos(Programa [] programas, HistoriaClinica[] historias){
+
+     // for (Programa [] programa: programas){
+     //   if (programa instanceof Estetica){
+     //     programa.info();
+     //    for(HistoriaClinica historia: historias){
+     //      for (Programa programasEnHistorias: historia.getProgramas()){
+     //        programasEnHistorias.info();
+
+    for (Programa programa: programas){
+      if (programa.esEstetica()){
+        System.out.println("El nombre del tratamiento estetico es: " +programa.getNombre());
+        System.out.println ("Su precio es: " +programa.getPrecio());
+        System.out.print("Sus cremas son: ");
+        for (Medicamento medicamento: programa.getMedicamento()){
+          System.out.println(medicamento.getNombre() + ", y su precio es: " +medicamento.getPrecio());
+        }
+
+        for(HistoriaClinica historia: historias){
+          for (Programa programasEnHistorias: historia.getProgramas()){
+            if (programasEnHistorias.getNombre().equalsIgnoreCase(programa.getNombre())){
+              System.out.println("Paciente: " +historia.getNya());
+              System.out.println("Su sexo es: " +historia.getSexo());
+            }
+          }
+        }
+      }
+
+    }
+  }
 
 
 

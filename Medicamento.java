@@ -37,4 +37,5 @@ public class Medicamento {
 	public void setEsCrema(boolean esCrema){
 		this.esCrema=esCrema;
 	}
+
 }

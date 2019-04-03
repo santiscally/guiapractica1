@@ -1,7 +1,7 @@
 abstract public class Programa implements ICalcular {
 	protected int numero;
 	protected String nombre;
-	protected Medicamento[] medicamentos=new Medicamento[3];
+	protected Medicamento[] medicamentos=new Medicamento[1];
 	protected double precio;
 
 	Programa(){}
@@ -36,6 +36,12 @@ abstract public class Programa implements ICalcular {
 	public void setPrecio(double precio){
 		this.precio=precio;
 	}
+
+	public void agregarMedicamento(Medicamento medicamento, int indice){
+		medicamentos[indice]=medicamento;
+	}
+
+	public boolean esEstetica(){return false;}
 
 	abstract public double calcularPrecio(double precio);
 

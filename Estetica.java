@@ -19,5 +19,7 @@ public class Estetica extends Programa {
 		return precio2*cantSesiones;
 	}
 
+	public boolean esEstetica(){return true;}
+
 
 }
