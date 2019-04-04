@@ -411,9 +411,8 @@ public class Main{
         for (int j=0;j<historias[i].getVisitas().length;j++){
           int years= fechaActual.get(Calendar.YEAR) - historias[i].getVisitas()[j].getFechaVisita().get(Calendar.YEAR);
           int months = fechaActual.get(Calendar.MONTH) - historias[i].getVisitas()[j].getFechaVisita().get(Calendar.MONTH);
-          if (years==0 && months==0){
-            cantidad++;
-          }
+          boolean esVerdad= (years==0)&& (months==0);
+          cantidad += (esVerdad) ? 1:0;
         }
       }
     }
