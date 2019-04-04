@@ -8,13 +8,14 @@ public class HistoriaClinica {
   private boolean obraSocial;
   private Programa [] programas= new Programa[1];
   private Visita [] visitas=new Visita[1];
+  private double plataAabonar;
 
   HistoriaClinica(){
     for(int i=0;i<visitas.length;i++){
       visitas[i]=new Visita();
     }
   }
-  HistoriaClinica (int dni, Calendar nac, String nya, char sexo, int telefono, boolean obraSocial, Programa [] programas){
+  HistoriaClinica (int dni, Calendar nac, String nya, char sexo, int telefono, boolean obraSocial, double plataAabonar, Programa [] programas){
     this.dni=dni;
     this.nac=nac;
     this.nya=nya;
@@ -22,9 +23,18 @@ public class HistoriaClinica {
     this.telefono=telefono;
     this.obraSocial=obraSocial;
     this.programas=programas;
+    this.plataAabonar=plataAabonar;
     for (int i=0; i<visitas.length;i++){
       visitas[i]=new Visita();
     }
+  }
+
+  public void setPlataAabonar(double plataAabonar){
+    this.plataAabonar=plataAabonar;
+  }
+
+  public double getPlataAabonar(){
+    return plataAabonar;
   }
   public int getDni(){
     return dni;
@@ -83,6 +93,6 @@ public class HistoriaClinica {
     return (fechaActual.get(Calendar.YEAR)-nac.get(Calendar.YEAR))<16;
   }
 
-  
+
 
 }

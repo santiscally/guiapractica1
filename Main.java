@@ -3,9 +3,10 @@ public class Main{
   public static void main(String[] args) {
     HistoriaClinica[] historias= new HistoriaClinica[1];
     Programa[] programas=new Programa [1];
-    opciones(programas, historias);
+    double calorias= Double.parseDouble(args[0]);
+    opciones(programas, historias,calorias);
   }
-  public static void opciones(Programa [] programas, HistoriaClinica[]historias){
+  public static void opciones(Programa [] programas, HistoriaClinica[]historias, double calorias){
     Scanner stdin= new Scanner (System.in);
     int opcion=0;
 
@@ -32,9 +33,9 @@ public class Main{
         case 6:
           mostrarTratamientosEsteticos(programas, historias);
           break;
-        // case 7:
-        //   mostrarVisitas(historias);
-        //   break;
+        case 7:
+          mostrarVisitas(historias, calorias);
+          break;
         case 8:
           mostrarCantTratamientoEstetico(programas);
           break;
@@ -52,10 +53,10 @@ public class Main{
     System.out.println("2. Ingresar informacion correspondiente a las historias clinicas");
     System.out.println("3. Mostrar informacion del paciente");
     System.out.println("4. Mostrar la cantidad de pacientes sin obra social");
-    System.out.println("5. Buscar por pantalla visitas correspondiente a determinada programa");
+    System.out.println("5. Buscar visitas correspondiente a determinado programa");
     System.out.println("6. Mostrar informacion de los tratamientos esteticos");
-    System.out.println("7. Mostrar informacion de las visitas");
-    System.out.println("8. Ver visitas y sus respectivos comentarios");
+    System.out.println("7. Ver visitas y sus respectivos comentarios");
+    System.out.println("8. Ver la cantidad de tratamientos esteticos");
     System.out.println("9. Salir del programa");
   }
   public static void ingresarProgramas(Programa[] programas){
@@ -181,12 +182,15 @@ public class Main{
           double excedio=(plataAgastar*((double)(historias[indice].getProgramas()[0].descuento)));
           if (excedio>=(historias[indice].getProgramas()[0].tope)){
             System.out.println("La plata a pagar es: " +(plataAgastar-historias[indice].getProgramas()[0].descuento));
+            historias[indice].setPlataAabonar((plataAgastar-historias[indice].getProgramas()[0].descuento));
           }else{
             System.out.println("La plata a pagar es: " +(plataAgastar-excedio));
+            historias[indice].setPlataAabonar(plataAgastar-excedio);
           }
           break salirOpcion;
         case 2:
           System.out.println("La plata a pagar es: " +plataAgastar);
+          historias[indice].setPlataAabonar(plataAgastar);
           break salirOpcion;
         default:
           System.out.println("OPCION INVALIDA, VUELVA A INGRESAR");
@@ -239,8 +243,8 @@ public class Main{
 
     for (int i=0;i<historias[indice].getVisitas().length;i++){
       Scanner stdin=new Scanner (System.in);
-      System.out.println("Ingrese el id correspondiente a la visita n" +(i+1) +": ");
-      int id=asignarInt();
+      Random rand=new Random();
+      int id=rand.nextInt();
 
       System.out.println("Ingrese la fecha: ");
       Calendar fecha=Calendar.getInstance();
@@ -492,7 +496,7 @@ public class Main{
       if (programa.esEstetica()){
         System.out.println("El nombre del tratamiento estetico es: " +programa.getNombre());
         System.out.println ("Su precio es: " +programa.getPrecio());
-        System.out.print("Sus cremas son: ");
+        System.out.println("Sus cremas son: ");
         for (Medicamento medicamento: programa.getMedicamento()){
           System.out.println(medicamento.getNombre() + ", y su precio es: " +medicamento.getPrecio());
         }
@@ -511,15 +515,43 @@ public class Main{
   }
 
   public static void mostrarCantTratamientoEstetico(Programa [] programas){
-
     int cantidad=0;
     for (int i=0; i<programas.length;i++){
       if (programas[i].esEstetica()){
         cantidad++;
       }
-      programas[i].setCantidadEstetico(cantidad);
+      Estetica.setCantidadEstetico(cantidad);
     }
-    System.out.println("La cantidad de tratamientos esteticos existentes son: " +programas[0].getCantidadEstetico());
+    System.out.println("La cantidad de tratamientos esteticos existentes son: " +Estetica.getCantidadEstetico());
+  }
+
+  public static void mostrarVisitas(HistoriaClinica [] historias, double calorias){
+    Random rand= new Random();
+    int numero= rand.nextInt(900) + 100;
+
+    for(int i=0;i<historias.length;i++){
+      programaEncontrado:
+      for (int j=0;j<historias[i].getProgramas().length;i++){
+        if ((historias[i].getProgramas()[j].esNutricion())){
+          if ( (((Nutricion)historias[i].getProgramas()[j]).getMaxCalorias())==calorias){
+            if ((historias[i].getPlataAabonar())>numero){
+              System.out.print("Nombre Paciente: "+historias[i].getNya());
+              for (int k=0;k<historias[i].getVisitas().length;k++){
+                System.out.print("\tID de la visita: " +historias[i].getVisitas()[k].getId());
+                System.out.print("\tDia visita: "+historias[i].getVisitas()[k].getFechaVisita().get(Calendar.DAY_OF_MONTH));
+                System.out.print("\\" +historias[i].getVisitas()[k].getFechaVisita().get(Calendar.MONTH)+1);
+                System.out.print("\\" +historias[i].getVisitas()[k].getFechaVisita().get(Calendar.YEAR));
+                System.out.print("\tProfesional a cargo: " +historias[i].getVisitas()[k].getProfesional());
+                System.out.print("\tComentarios: "+historias[i].getVisitas()[k].getComentarios());
+                break programaEncontrado;
+            }
+
+          }
+
+        }
+      }
+    }
+  }
   }
 
 

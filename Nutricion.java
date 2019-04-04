@@ -5,7 +5,7 @@ public class Nutricion extends Programa{
 	Nutricion(){
 		super();
 	}
-	Nutricion (int numero, String nombre, Medicamento[] medicamentos, double precio,double maxCalorias, String [] comidas){
+	Nutricion (int numero, String nombre, Medicamento[] medicamentos, double precio, double maxCalorias, String [] comidas){
 		super(numero, nombre, medicamentos, precio);
 		this.maxCalorias=maxCalorias;
 		this.comidas=comidas;
@@ -31,6 +31,8 @@ public class Nutricion extends Programa{
 	public double calcularPrecio(double precio2){
 		return precio2;
 	}
+
+	public boolean esNutricion(){return true;}
 
 
 
